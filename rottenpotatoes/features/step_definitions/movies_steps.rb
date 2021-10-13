@@ -5,6 +5,16 @@ Given /the following movies exist/ do |movies_table|
   end
 end
 
+Then /(.*) seed movies should exist/ do | n_seeds |
+  Movie.count.should be n_seeds.to_i
+end
+
+Then /^the director of "(.+)" should be "(.+)"/ do |movie_name, director|
+  movie = Movie.find_by(title: movie_name)
+  visit movie_path(movie)
+  expect(page.text).to match(/Director:\s#{director}/)
+end
+
 Then /I should see "(.*)" before "(.*)"/ do |e1, e2|
   #  ensure that that e1 occurs before e2.
   #  page.body is the entire content of the page as a string.
